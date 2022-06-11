@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS sstyle (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(40) NOT NULL
+	name VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS singer (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(40) NOT NULL
+	name VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS stylesinger (
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS stylesinger (
 
 CREATE TABLE IF NOT EXISTS album (
 	id SERIAL PRIMARY KEY,
-	title VARCHAR(40) NOT NULL,
+	title VARCHAR(200) NOT NULL,
 	release_year DATE
 );
 
@@ -28,18 +28,17 @@ CREATE TABLE IF NOT EXISTS albumsinger (
 
 CREATE TABLE IF NOT EXISTS track (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(40) NOT NULL,
+	name VARCHAR(200) NOT NULL,
 	length INTERVAL SECOND,
 	album_id INTEGER NOT NULL REFERENCES album(id)
 );
 
 CREATE TABLE IF NOT EXISTS collection (
 	id SERIAL PRIMARY KEY,
-	title VARCHAR(40) NOT NULL,
+	title VARCHAR(200) NOT NULL,
 	release_year DATE
 );
 CREATE TABLE IF NOT EXISTS trackcollection (
 	track_id INTEGER REFERENCES track(id),
 	collection_id INTEGER REFERENCES collection(id),
 	CONSTRAINT trackcollection_pk PRIMARY KEY (track_id, collection_id)
-);
