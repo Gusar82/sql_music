@@ -44,7 +44,7 @@ def get_from_album(id_album):
     try:
         res_data = response['release_date']
         res_genre = response['genres']['data'][0]
-    except KeyError:
+    except (KeyError, IndexError):
         return None, None, None
     return res_data, res_genre['id'], res_genre['name']
 
@@ -107,7 +107,10 @@ def Insert_from_radio(id_radio, limit=0):
                                 album_id = excluded.album_id;
 
                        INSERT INTO TrackCollection(track_id,collection_id)
-                       VALUES ({track_id},'{id_radio}');
+                       VALUES ({track_id},'{id_radio}')
+                       ON CONFLICT (track_id,collection_id) DO UPDATE 
+                            SET track_id = excluded.track_id, 
+                                collection_id = excluded.collection_id;
                        
                        INSERT INTO AlbumSinger(singer_id,album_id)
                        VALUES ({singer_id},'{album_id}')
@@ -135,8 +138,9 @@ connection = engine.connect()
 
 dict_collection ={}
 
-Insert_from_top_radio(dict_collection, limit=16)
+# Insert_from_top_radio(dict_collection, limit=16)
+get_topradio(dict_collection,18)
 
 for key in dict_collection.keys():
-    Insert_from_radio(key, 4)
+    Insert_from_radio(key, 10)
 
